@@ -1,63 +1,21 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>video downloader</title>
-<style>
-body {
-	background-color: #090c58;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-.container {
-  text-align: center;
-}
-
-input[type="text"] {
-	background-color: #090c58;
-	color: #818a6c;
-  padding: 10px;
-  margin-bottom: 20px;
-  width: 300px;
-	border: 2px solid #818a6c;
-}
-
-input[type="submit"] {
-  padding: 10px 20px;
-  background-color: #818a6c;
-  color: #090c58;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-input[type="submit"]:hover {
-  background-color: #090c58;
-}
-
-.result {
-  color: #818a6c;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Converter</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <form id="urlForm">
+            <input type="text" id="urlInput" name="urlInput" placeholder="Enter URL">
+            <br>
+            <button type="button" id="submitButton">Submit</button>
+        </form>
+        <div id="url2Display"></div>
+    </div>
 
-<div class="container">
-  <form method="POST">
-    <input type="text" name="url">
-    <br>
-    <input type="submit" value="submit">
-  </form>
-  {% if url %}
-  <p class="result">{{ url }}</p>
-  {% endif %}
-</div>
-
+    <script src="script.js"></script>
 </body>
 </html>
