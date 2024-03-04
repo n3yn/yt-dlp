@@ -13,11 +13,11 @@ def convert_url():
     data = request.json
     url = data['url']
     ydl_opts = {
-		"quiet": True,
-		"simulate": True,
-		"forceurl": True,
-	    	"cooiefile": "twcookies.txt"
-		'format': 'best'
+	    "quiet": True,
+	    "simulate": True,
+	    "forceurl": True,
+	    "cooiefile": "twcookies.txt",
+	    'format': 'best'
 	}
     with YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url)
