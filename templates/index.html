@@ -26,8 +26,14 @@ document.getElementById("urlForm").addEventListener("submit", function(event) {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("convertedUrl").innerText = "Converted URL: " + data.converted_url;
+        var convertedUrlDiv = document.getElementById("convertedUrl");
+        convertedUrlDiv.innerHTML = "Converted URL: ";
+        var link = document.createElement("a");
+        link.href = data.converted_url;
+        link.textContent = data.converted_url;
+        convertedUrlDiv.appendChild(link);
     })
+    
     .catch(error => console.error('Error:', error));
 });
 </script>
