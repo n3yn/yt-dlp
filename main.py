@@ -16,6 +16,7 @@ def convert_url():
 		"quiet": True,
 		"simulate": True,
 		"forceurl": True,
+	    	"cooiefile": "twcookies.txt"
 		'format': 'best'
 	}
     with YoutubeDL(ydl_opts) as ydl:
