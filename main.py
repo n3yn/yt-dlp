@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request, jsonify
 from yt_dlp import YoutubeDL
+
 
 app = Flask(__name__)
 
@@ -7,23 +8,22 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/convert_url', methods=['POST'])
+@app.route('/convert', methods=['POST'])
 def convert_url():
-    data = request.get_json()
+    data = request.json
     url = data['url']
-    
     ydl_opts = {
-        "quiet":    True,
-        "simulate": True,
-        "forceurl": True,
-        'format': 'best'
-    }
-    
+        "cookiefile": "twcookies.txt",
+		"quiet": True,
+		"simulate": True,
+		"forceurl": True,
+		'format': 'best'
+	}
     with YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url)
-        url2 = info["url"]
-    
-    return jsonify({'url2': url2})
+        r = info["url"]
+    converted_url = r
+    return jsonify({'converted_url': converted_url})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",debug=True)
