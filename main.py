@@ -13,7 +13,6 @@ def convert_url():
     data = request.json
     url = data['url']
     ydl_opts = {
-        "cookiefile": "twcookies.txt",
 		"quiet": True,
 		"simulate": True,
 		"forceurl": True,

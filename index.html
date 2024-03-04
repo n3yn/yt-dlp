@@ -2,20 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Converter</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Url Converter</title>
 </head>
 <body>
-    <div class="container">
-        <form id="urlForm">
-            <input type="text" id="urlInput" name="urlInput" placeholder="Enter URL">
-            <br>
-            <button type="button" id="submitButton">Submit</button>
-        </form>
-        <div id="url2Display"></div>
-    </div>
+<form id="urlForm" action="/convert" method="post">
+    <input type="text" id="urlInput" name="url" placeholder="Enter URL here...">
+    <button type="submit">Submit</button>
+</form>
+<div id="convertedUrl"></div>
 
-    <script src="script.js"></script>
+<script>
+document.getElementById("urlForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var urlInput = document.getElementById("urlInput").value;
+    fetch('/convert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({url: urlInput})
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("convertedUrl").innerText = "Converted URL: " + data.converted_url;
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
 </body>
 </html>
