@@ -37,14 +37,13 @@ def search():
         m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
         match = re.search(pattern, content.text)
         m_titles.append(match.group(1).strip())
-    max_number = 0
+    page_num = 0
     for tag in a_tags:
     	text = tag.get_text(strip=True)
     	if text.isdigit():
     		number = int(text)
     		if number > max_number:
     			page_num = number
-                
     return jsonify({'m_titles': m_titles, 'm_urls': m_urls, 'page_num': page_num})
 
 if __name__ == '__main__':
