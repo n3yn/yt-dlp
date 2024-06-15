@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import requests
 import bs4
+import re
 
 app = Flask(__name__)
 
@@ -23,6 +24,8 @@ def search():
     # Make the request and parse the HTML
     res = requests.get(url)
     r = bs4.BeautifulSoup(res.text, "html.parser")
+
+    pattern = r'\n\t+([^\n]+)\n\t+'
     
     # Extract the titles and URLs
     m_titles = []
@@ -31,7 +34,8 @@ def search():
     for content in content_div:
         a = content.find('a')
         m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
-        m_titles.append(content.text.replace('\n', '').replace('\t', ''))
+        match = re.search(pattern, content.text)
+        m_titles.append(match.group(1).strip())
     
     # Return the results as JSON
     return jsonify({'m_titles': m_titles, 'm_urls': m_urls})
