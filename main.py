@@ -42,7 +42,7 @@ def search():
     	text = tag.get_text(strip=True)
     	if text.isdigit():
     		number = int(text)
-    		if number > max_number:
+    		if number > page_num:
     			page_num = number
     return jsonify({'m_titles': m_titles, 'm_urls': m_urls, 'page_num': page_num})
 
