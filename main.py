@@ -1,29 +1,34 @@
-from flask import Flask, render_template, request, jsonify
-from yt_dlp import YoutubeDL
-
+from flask import Flask, request, jsonify
+from bs4 import BeautifulSoup
+import urllib.parse
+import requests
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/convert', methods=['POST'])
-def convert_url():
+@app.route('/search', methods=['POST'])
+def search():
     data = request.json
-    url = data['url']
-    ydl_opts = {
-	    "quiet": True,
-	    "simulate": True,
-	    "forceurl": True,
-	    "cooiefile": "twcookies.txt",
-	    'format': 'best'
-	}
-    with YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url)
-        r = info["url"]
-    converted_url = r
-    return jsonify({'converted_url': converted_url})
+    query = data.get('query')
+
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
+
+    m_titles = []
+    m_urls = []
+
+    encoded_query = urllib.parse.quote(query)
+    domain = 'https://www.melon365.com'
+    url = domain + '/video/search?sk=' + encoded_query
+    res = requests.get(url)
+    r = BeautifulSoup(res.text, "html.parser")
+
+    content_div = r.find_all('div', class_='newslistsearchtextrighttitle')
+    for content in content_div:
+        a = content.find('a')
+        m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
+        m_titles.append(content.text.replace('\n', '').replace('\t', ''))
+
+    return jsonify({'titles': m_titles, 'urls': m_urls})
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",debug=True)
+    app.run(host='0.0.0.0', port=5000)
