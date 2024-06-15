@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/search', methods=['POST'])
 def search():
     # Get the query from the client
-    query = request.form['query']
+    query = request.form.get('query')
     
     # Encode the query for the URL
     query = urllib.parse.quote(query)
