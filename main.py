@@ -31,14 +31,21 @@ def search():
     m_titles = []
     m_urls = []
     content_div = r.find_all('div', class_='newslistsearchtextrighttitle')
+    a_tags = r.find_all('a', class_='reglink12 expand')
     for content in content_div:
         a = content.find('a')
         m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
         match = re.search(pattern, content.text)
         m_titles.append(match.group(1).strip())
-    
-    # Return the results as JSON
-    return jsonify({'m_titles': m_titles, 'm_urls': m_urls})
+    max_number = 0
+    for tag in a_tags:
+    	text = tag.get_text(strip=True)
+    	if text.isdigit():
+    		number = int(text)
+    		if number > max_number:
+    			page_num = number
+                
+    return jsonify({'m_titles': m_titles, 'm_urls': m_urls, 'page_num': page_num})
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0', port=5000)
