@@ -31,7 +31,11 @@ def search():
     for content in content_div:
         a = content.find('a')
         m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
-        m_titles.append(content.text.replace('\n', '').replace('\t', ''))
+        ttt = content.text.replace('\n', '').replace('\t', '')
+        pattern = r"\(音\) (\w+)\("
+        matches = re.findall(pattern, ttt)
+        mtitle = matches[0]
+        m_titles.append(mtitle)
     
     # Return the results as JSON
     return jsonify({'m_titles': m_titles, 'm_urls': m_urls})
