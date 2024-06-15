@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import requests
 import bs4
+import re
 
 app = Flask(__name__)
 
