@@ -16,19 +16,24 @@ def search():
     m_titles = []
     m_urls = []
 
-    encoded_query = urllib.parse.quote(query)
-    domain = 'https://www.melon365.com'
-    url = domain + '/video/search?sk=' + encoded_query
-    res = requests.get(url)
-    r = BeautifulSoup(res.text, "html.parser")
+    try:
+        encoded_query = urllib.parse.quote(query)
+        domain = 'https://www.melon365.com'
+        url = domain + '/video/search?sk=' + encoded_query
+        res = requests.get(url)
+        res.raise_for_status()
+        
+        r = BeautifulSoup(res.text, "html.parser")
 
-    content_div = r.find_all('div', class_='newslistsearchtextrighttitle')
-    for content in content_div:
-        a = content.find('a')
-        m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
-        m_titles.append(content.text.replace('\n', '').replace('\t', ''))
+        content_div = r.find_all('div', class_='newslistsearchtextrighttitle')
+        for content in content_div:
+            a = content.find('a')
+            m_urls.append(domain + a.get('href').split('.html')[0] + '.html')
+            m_titles.append(content.text.replace('\n', '').replace('\t', ''))
 
-    return jsonify({'titles': m_titles, 'urls': m_urls})
+        return jsonify({'titles': m_titles, 'urls': m_urls})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
