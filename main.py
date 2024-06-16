@@ -45,6 +45,10 @@ def search():
     		if number > page_num:
     			page_num = number
     return jsonify({'m_titles': m_titles, 'm_urls': m_urls, 'page_num': page_num})
-
+@app.route('/search', methods=['HEAD'])
+def head_search():
+    response = make_response()
+    response.headers['Content-Type'] = 'application/json'
+    return response
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0', port=5000)
